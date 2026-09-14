@@ -1,6 +1,6 @@
 ﻿namespace NotikaIdentityEmail.Models.IdentityModels
 {
-    public class UserEditViewModel
+    public class UserEditViewModel // Kullanıcı düzenleme işlemleri için kullanılan ViewModel sınıfı. ProfileController'da kullanıcı bilgilerini düzenlemek için kullanılır. Kullanıcı adı, şifre, isim, soyisim, şehir, resim URL'si, telefon numarası ve email gibi bilgileri içerir.
     {
         public string UserName { get; set; }
         public string Password { get; set; }

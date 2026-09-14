@@ -5,29 +5,29 @@
     Layout = "~/Views/UserLayout/Index.cshtml";
 }
 @{
-    var timeDiff = DateTime.Now - Model.SendDate;
-    string timeAgoText;
+    var timeDiff = DateTime.Now - Model.SendDate; //Şuanın tarihi ile mesajın gönderildiği tarih arasındaki farkı hesapla
+    string timeAgoText; // Zaman farkını göstermek için kullanılacak metin
 
-    if (timeDiff.TotalMinutes < 1)
+    if (timeDiff.TotalMinutes < 1) // Eğer fark 1 dakikadan az ise
     {
         timeAgoText = "Şimdi";
     }
-    else if (timeDiff.TotalMinutes < 60)
+    else if (timeDiff.TotalMinutes < 60) // Eğer fark 1 saatten az ise
     {
         timeAgoText = $"{(int)timeDiff.TotalMinutes} dakika önce";
     }
-    else if (timeDiff.TotalHours < 24)
+    else if (timeDiff.TotalHours < 24) // Eğer fark 1 günden az ise
     {
         timeAgoText = $"{(int)timeDiff.TotalHours} saat önce";
     }
 
-    else if (timeDiff.TotalDays < 7)
+    else if (timeDiff.TotalDays < 7) // Eğer fark 1 haftadan az ise
     {
         timeAgoText = $"{(int)timeDiff.TotalDays} gün önce";
     }
     else
     {
-        timeAgoText = Model.SendDate.ToString("dd MMMM yyyy");
+        timeAgoText = Model.SendDate.ToString("dd MMMM yyyy"); // Eğer fark 1 haftadan fazla ise, tam tarihi göster
     }
 
 }
