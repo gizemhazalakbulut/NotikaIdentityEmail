@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace NotikaIdentityEmail.Models
+namespace NotikaIdentityEmail.Models.IdentityModels
 {
-    public class CustomIdentityValidator:IdentityErrorDescriber
+    public class CustomIdentityValidator : IdentityErrorDescriber
     {
         public override IdentityError PasswordTooShort(int length)
         {
