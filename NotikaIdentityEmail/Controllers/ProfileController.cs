@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotikaIdentityEmail.Entities;
 using NotikaIdentityEmail.Models.IdentityModels;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace NotikaIdentityEmail.Controllers
 {
+   
     public class ProfileController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -18,15 +20,7 @@ namespace NotikaIdentityEmail.Controllers
         [HttpGet]
         public async Task<IActionResult> EditProfile()
         {
-
-            var values = await _userManager.GetUserAsync(User);
-
-            if (values == null)
-            {
-                return NotFound("Kullanıcı bulunamadı.");
-            }
-
-            /* var values = await _userManager.FindByNameAsync(User.Identity.Name);*/ // Kullanıcının kullanıcı adını alıyoruz ve veritabanında bu kullanıcıyı buluyoruz.
+            var values = await _userManager.FindByNameAsync(User.Identity.Name); // Kullanıcının kullanıcı adını alıyoruz ve veritabanında bu kullanıcıyı buluyoruz.
             UserEditViewModel userEditViewModel = new UserEditViewModel();
             userEditViewModel.Name = values.Name;
             userEditViewModel.Surname = values.Surname;
