@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // DbContext ve Identity
 builder.Services.AddDbContext<EmailContext>(); // DbContext sýnýfýný dependency injection ile ekliyoruz. Böylece veritabaný iþlemlerini gerçekleþtirebiliriz.
-builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<EmailContext>().AddErrorDescriber<CustomIdentityValidator>(); // Identity sýnýfýný ekliyoruz. AppUser sýnýfýný kullanýcý sýnýfý olarak, IdentityRole sýnýfýný ise rol sýnýfý olarak kullanýyoruz. AddEntityFrameworkStores metodu ile veritabaný iþlemlerini gerçekleþtirecek olan DbContext sýnýfýný belirtiyoruz. CustomIdentityValidator sýnýfýný ise hata mesajlarýný özelleþtirmek için kullanýyoruz.Türkçeleþtirmek için AddErrorDescriber metodu ile CustomIdentityValidator sýnýfýný ekliyoruz.
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<EmailContext>().AddErrorDescriber<CustomIdentityValidator>().AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider); // Identity sýnýfýný ekliyoruz. AppUser sýnýfýný kullanýcý sýnýfý olarak, IdentityRole sýnýfýný ise rol sýnýfý olarak kullanýyoruz. AddEntityFrameworkStores metodu ile veritabaný iþlemlerini gerçekleþtirecek olan DbContext sýnýfýný belirtiyoruz. CustomIdentityValidator sýnýfýný ise hata mesajlarýný özelleþtirmek için kullanýyoruz.Türkçeleþtirmek için AddErrorDescriber metodu ile CustomIdentityValidator sýnýfýný ekliyoruz.
 
 
 // JWT Ayarlarý
@@ -46,7 +46,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-
+app.UseStatusCodePagesWithReExecute("/Error/{0}"); // Hata sayfalarýný özelleþtirmek için UseStatusCodePagesWithReExecute metodunu kullanýyoruz. Bu metod ile belirli bir hata kodu alýndýðýnda, kullanýcýyý belirli bir sayfaya yönlendirebiliyoruz. Örneðin, 404 hatasý alýndýðýnda kullanýcýyý /Error/404 sayfasýna yönlendirebiliriz.
 
 
 
