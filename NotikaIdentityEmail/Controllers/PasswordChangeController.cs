@@ -94,9 +94,12 @@ namespace NotikaIdentityEmail.Controllers
             if (userid == null || token == null)
             {
                 ViewBag.v = "Hata Oluştu"; // Hata mesajı gösteriliyor.
+                return View();
             }
             var user = await _userManager.FindByIdAsync(userid.ToString()); // Kullanıcıyı userId ile buluyoruz.
-            var result = await _userManager.ResetPasswordAsync(user, token.ToString(), resetPasswordViewModel.Password); // Identity, kullanıcının şifresini sıfırlamak için ResetPasswordAsync metodunu kullanıyor. Bu metod, kullanıcıyı, token'ı ve yeni şifreyi parametre olarak alıyor.
+            var result = await _userManager.ResetPasswordAsync(user, token.ToString(), resetPasswordViewModel.Password); // Identity, kullanıcının şifresini sıfırlamak için ResetPasswordAsync metodunu kullanıyor. Bu metod, kullanıcıyı, token'ı ve yeni şifreyi parametre olarak alıyor. Identity token'ı kontrol ediyor. Token geçerliyse kullanıcının şifresini değiştiriyor.
+
+
             if (result.Succeeded)
             {
                 return RedirectToAction("UserLogin", "Login");
