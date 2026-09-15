@@ -28,20 +28,26 @@ namespace NotikaIdentityEmail.Controllers
             // Kullanıcı giriş işlemleri burada yapılacak
 
             var value = _context.Users.Where(x => x.UserName == model.Username).FirstOrDefault(); // Kullanıcı adı ile veritabanında kullanıcıyı buluyoruz.
-            if (value.EmailConfirmed == true) // Kullanıcının emaili doğrulanmışsa giriş yapmasına izin veriyoruz.
+
+            if (value == null)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, true, true);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("EditProfile", "Profile");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı!");
-                    return View(model);
-                }
+                ModelState.AddModelError(string.Empty, "Kullanıcı bulunamadı.");
+                return View(model);
             }
-            return View(); // Kullanıcının emaili doğrulanmamışsa giriş yapmasına izin vermiyoruz.
+
+            if (!value.EmailConfirmed)
+            {
+                ModelState.AddModelError(string.Empty, "e-mail adresiniz henüz onaylanmamış.");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, true, true); // Kullanıcı adı ve şifreyi kontrol ediyoruz. true parametresi ile kullanıcıyı hatırlamasını sağlıyoruz. true parametresi ile başarısız giriş denemelerinde hesabı kilitlemesini sağlıyoruz.
+            if (result.Succeeded)
+            {
+                return RedirectToAction("EditProfile", "Profile");
+            }
+            ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre yanlış");
+            return View(model);
 
 
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NotikaIdentityEmail.Controllers
 {
-   
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
