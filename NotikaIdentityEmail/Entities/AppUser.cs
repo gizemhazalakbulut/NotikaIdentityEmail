@@ -9,5 +9,6 @@ namespace NotikaIdentityEmail.Entities
         public string? ImageUrl { get; set; } // boş olabilir ? işareti sayesinde
         public string? City { get; set; } // boş olabilir
         public int? ActivationCode { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
