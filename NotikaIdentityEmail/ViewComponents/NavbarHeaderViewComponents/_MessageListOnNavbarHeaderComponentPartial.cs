@@ -18,8 +18,8 @@ namespace NotikaIdentityEmail.ViewComponents.NavbarHeaderViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var userValue = await _userManager.FindByNameAsync(User.Identity.Name);
-            var userEmail = userValue.Email;
+            var userValue = await _userManager.FindByNameAsync(User.Identity.Name); // Sisteme giriş yapan kullanıcı bulunuyor. User.Identity.Name sisteme giriş yapmış kullanıcının kullanıcı adını verir. 
+            var userEmail = userValue.Email; // Kullanıcının email adresi alınıyor.
             var values = from message in _context.Messages
                          join user in _context.Users
                          on message.SenderEmail equals user.Email

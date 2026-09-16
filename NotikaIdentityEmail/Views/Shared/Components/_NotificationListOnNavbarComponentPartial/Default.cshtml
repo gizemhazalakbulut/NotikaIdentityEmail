@@ -1,4 +1,4 @@
-﻿@model List<Notification>
+﻿@model List<Notification> // Bu View hangi tipte veri bekliyor? Bir tane Notification değil,bunlardan oluşan bir LISTE bekliyor.
 @{
     int count = 0;
 }
@@ -8,7 +8,7 @@
         <h2>Bildirimler</h2>
     </div>
     <div class="hd-message-info">
-        @foreach (var item in Model)
+        @foreach (var item in Model) // büyük Model de actiondan gönderilen  return View(values); den gelen değerler var. foreach ile tek tek item olarak alıyoruz.
         {
             count++;
             <a href="#">
