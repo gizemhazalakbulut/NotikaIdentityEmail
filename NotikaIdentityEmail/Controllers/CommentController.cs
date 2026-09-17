@@ -15,7 +15,7 @@ namespace NotikaIdentityEmail.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult UserComments()
+        public IActionResult UserComments() // Kullanıcıların yorumlarını listelemek için bir action metodu. Bu metod, Comments tablosundaki tüm yorumları ve ilgili kullanıcı bilgilerini (AppUser) içeren bir listeyi alır ve bu listeyi UserComments view'ına gönderir.
         {
             var values = _context.Comments.Include(x => x.AppUser).ToList();
             return View(values);
