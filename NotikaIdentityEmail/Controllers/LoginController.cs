@@ -61,10 +61,10 @@ namespace NotikaIdentityEmail.Controllers
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, returnUrl);
             return Challenge(properties, provider);
         }
-        [HttpPost]
-        public IActionResult ExternalLoginCallBack(string? returnUrl = null, string remoteError = null)
-        {
-            returnUrl ??= Url.Content("~/"); // ?? null atama operatörüdür. returnUrl nullsa returnUrl = Url.Content("~/") 
-        }
+        //[HttpPost]
+        //public IActionResult ExternalLoginCallBack(string? returnUrl = null, string remoteError = null)
+        //{
+        //    returnUrl ??= Url.Content("~/"); // ?? null atama operatörüdür. returnUrl nullsa returnUrl = Url.Content("~/") 
+        //}
     }
 }
