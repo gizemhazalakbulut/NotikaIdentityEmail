@@ -48,6 +48,15 @@ builder.Services.AddAuthentication(options =>
 });
 
 
+// Google Authentication Konfigürasyonu
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = "Google Client Id Gelecek";
+        options.ClientSecret = "Google Client Secret Deðeri Gelecek";
+    });
+
+
 
 builder.Services.AddControllersWithViews();
 

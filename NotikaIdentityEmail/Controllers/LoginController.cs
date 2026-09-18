@@ -10,11 +10,13 @@ namespace NotikaIdentityEmail.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager; // SignInManager sınıfı, kullanıcı giriş işlemlerini gerçekleştirmek için kullanılır. AppUser sınıfını generic olarak veriyoruz, böylece kendi kullanıcı sınıfımızı kullanabiliriz.
         private readonly EmailContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public LoginController(SignInManager<AppUser> signInManager, EmailContext context)
+        public LoginController(SignInManager<AppUser> signInManager, EmailContext context, UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _context = context;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -50,6 +52,19 @@ namespace NotikaIdentityEmail.Controllers
             return View(model);
 
 
+        }
+
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string? returnUrl= null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallBack", "Login", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, returnUrl);
+            return Challenge(properties, provider);
+        }
+        [HttpPost]
+        public IActionResult ExternalLoginCallBack(string? returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Content("~/"); // ?? null atama operatörüdür. returnUrl nullsa returnUrl = Url.Content("~/") 
         }
     }
 }
