@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -45,16 +46,19 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
     };
+})
+.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+{
+
+    options.ClientId = "";
+    options.ClientSecret = "";
+    options.CallbackPath = "";
+
 });
-
-
 // Google Authentication Konfigürasyonu
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = "Google Client Id Gelecek";
-        options.ClientSecret = "Google Client Secret Deðeri Gelecek";
-    });
+
+
+
 
 
 

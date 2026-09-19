@@ -1,0 +1,401 @@
+﻿@model List<AppUser>
+
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+
+    int count = 0;
+
+    int totalUsers = Model?.Count ?? 0;
+    int activeUsers = Model?.Count(x => x.IsActive) ?? 0;
+    int passiveUsers = totalUsers - activeUsers;
+}
+
+<style>
+    .user-page-header {
+        background: linear-gradient(135deg, #00c292, #00bcd4);
+        color: #fff;
+        border-radius: 16px;
+        padding: 28px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+        .user-page-header h2 {
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .user-page-header p {
+            margin: 0;
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+    .stat-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        border-left: 5px solid #00c292;
+        transition: 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+        }
+
+        .stat-card h4 {
+            margin: 0;
+            font-size: 14px;
+            color: #777;
+            font-weight: 600;
+        }
+
+        .stat-card .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 10px;
+            color: #222;
+        }
+
+    .custom-table-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    }
+
+    .table-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        border-bottom: 1px solid #f1f1f1;
+        padding-bottom: 12px;
+    }
+
+        .table-title h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .table-title span {
+            font-size: 13px;
+            color: #888;
+        }
+
+    .custom-user-table {
+        margin-bottom: 0;
+    }
+
+        .custom-user-table thead tr {
+            background: #f8fafc;
+        }
+
+        .custom-user-table thead th {
+            border-bottom: none !important;
+            color: #333;
+            font-weight: 700;
+            padding: 14px !important;
+        }
+
+        .custom-user-table tbody tr {
+            transition: 0.25s ease;
+        }
+
+            .custom-user-table tbody tr:hover {
+                background-color: #f9fcff;
+            }
+
+        .custom-user-table td {
+            vertical-align: middle !important;
+            padding: 14px !important;
+        }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .user-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00c292, #00bcd4);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .user-name {
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 2px;
+    }
+
+    .user-subtext {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-active {
+        background-color: #e8fff8;
+        color: #00a36c;
+        border: 1px solid #bdf2df;
+    }
+
+    .status-passive {
+        background-color: #fff1f1;
+        color: #e74c3c;
+        border: 1px solid #f5c6cb;
+    }
+
+    .username-pill {
+        display: inline-block;
+        background: #f4f7fb;
+        color: #444;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .email-text {
+        color: #555;
+        font-size: 13px;
+    }
+
+    .action-btn {
+        border-radius: 20px;
+        padding: 7px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none !important;
+        display: inline-block;
+        transition: 0.25s ease;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-deactivate {
+        background-color: #fff1f1;
+        color: #e74c3c;
+        border: 1px solid #f5c6cb;
+    }
+
+        .btn-deactivate:hover {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+    .btn-activate {
+        background-color: #e8fff8;
+        color: #00a36c;
+        border: 1px solid #bdf2df;
+    }
+
+        .btn-activate:hover {
+            background-color: #00a36c;
+            color: #fff;
+        }
+</style>
+
+<div class="form-element-area">
+    <div class="container">
+
+        <div class="user-page-header">
+            <h2>Kullanıcı Yönetimi</h2>
+            <p>Sistemde kayıtlı kullanıcıları görüntüleyebilir ve aktiflik durumlarını yönetebilirsin.</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="stat-card">
+                    <h4>Toplam Kullanıcı</h4>
+                    <div class="stat-number">@totalUsers</div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="stat-card" style="border-left-color:#00a36c;">
+                    <h4>Aktif Kullanıcı</h4>
+                    <div class="stat-number">@activeUsers</div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="stat-card" style="border-left-color:#e74c3c;">
+                    <h4>Pasif Kullanıcı</h4>
+                    <div class="stat-number">@passiveUsers</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="custom-table-card">
+
+            <div class="table-title">
+                <h3>Kullanıcı Listesi</h3>
+                <span>Toplam @totalUsers kayıt gösteriliyor</span>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table custom-user-table">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ad Soyad</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Email</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                count++;
+
+                                var firstNameInitial =
+                                !string.IsNullOrEmpty(item.Name)
+                                ? item.Name.Substring(0, 1).ToUpper()
+                                : "";
+
+                                var lastNameInitial =
+                                !string.IsNullOrEmpty(item.Surname)
+                                ? item.Surname.Substring(0, 1).ToUpper()
+                                : "";
+
+                                var initials = firstNameInitial + lastNameInitial;
+
+                                <tr>
+
+                                    <td>
+                                        <strong>@count</strong>
+                                    </td>
+
+                                    <td>
+                                        <div class="user-info">
+
+                                            <div class="user-avatar">
+                                                @initials
+                                            </div>
+
+                                            <div>
+                                                <div class="user-name">
+                                                    @item.Name @item.Surname
+                                                </div>
+
+                                                <div class="user-subtext">
+                                                    Sistem kullanıcısı
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="username-pill">
+                                            @item.UserName
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="email-text">
+                                            @item.Email
+                                        </span>
+                                    </td>
+
+                                    <td>
+
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="status-badge status-active">
+                                                Aktif
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-badge status-passive">
+                                                Pasif
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+
+                                        @if (item.IsActive)
+                                        {
+                                            <a asp-controller="User"
+                                               asp-action="DeactivateUser"
+                                               asp-route-id="@item.Id"
+                                               class="action-btn btn-deactivate">
+
+                                                Pasif Yap
+
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="User"
+                                               asp-action="ActivateUser"
+                                               asp-route-id="@item.Id"
+                                               class="action-btn btn-activate">
+
+                                                Aktif Yap
+
+                                            </a>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    Kullanıcı bulunamadı.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
