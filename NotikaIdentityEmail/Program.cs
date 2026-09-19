@@ -52,7 +52,7 @@ builder.Services.AddAuthentication(options =>
 
     options.ClientId = "";
     options.ClientSecret = "";
-    options.CallbackPath = "";
+    options.CallbackPath = "/signin-google";
 
 });
 // Google Authentication Konfigürasyonu
